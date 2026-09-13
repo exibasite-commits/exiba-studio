@@ -61,11 +61,60 @@ const FONT_OPTIONS = [
 ];
 
 const FONT_PAIRINGS = [
-  { name: 'Elegância & Luxo', heading: 'Playfair Display', body: 'Plus Jakarta Sans', desc: 'Perfeito para clínicas, joalherias e consultores VIP' },
-  { name: 'Tech & Inovação', heading: 'Outfit', body: 'DM Sans', desc: 'Visual dinâmico para startups, criadores e negócios modernos' },
-  { name: 'Design Suíço', heading: 'Inter', body: 'Inter', desc: 'Minimalismo puro e legibilidade máxima' },
-  { name: 'Alta Costura', heading: 'Cinzel', body: 'Montserrat', desc: 'Sofisticação extrema para marcas premium e arquitetura' },
-  { name: 'Geek & Dev', heading: 'Space Grotesk', body: 'JetBrains Mono', desc: 'Identidade tech para desenvolvedores e Web3' },
+  {
+    name: 'Elegância & Luxo',
+    heading: 'Playfair Display',
+    body: 'Plus Jakarta Sans',
+    desc: 'Estética clássica e refinada para marcas de alto padrão',
+    tag: 'Clínicas & Joias',
+    sample: 'Harmonização & Estética Avançada',
+    subsample: 'Tratamentos exclusivos com atendimento personalizado para você',
+  },
+  {
+    name: 'Tech & Inovação',
+    heading: 'Outfit',
+    body: 'DM Sans',
+    desc: 'Visual contemporâneo, dinâmico e de alto impacto',
+    tag: 'Startups & Criadores',
+    sample: 'Soluções Digitais para o Seu Negócio',
+    subsample: 'Aumente suas vendas com estratégias modernas e automatizadas',
+  },
+  {
+    name: 'Design Suíço',
+    heading: 'Inter',
+    body: 'Inter',
+    desc: 'Minimalismo funcional, clareza e precisão geométrica',
+    tag: 'Arquitetura & Clean',
+    sample: 'Projetos Funcionais & Interiores',
+    subsample: 'Linhas puras com foco em eficiência, equilíbrio e elegância',
+  },
+  {
+    name: 'Alta Costura',
+    heading: 'Cinzel',
+    body: 'Montserrat',
+    desc: 'Tipografia serifada imponente com toque editorial',
+    tag: 'Moda & Luxo',
+    sample: 'COLEÇÃO EXCLUSIVA DE ALTA MODA',
+    subsample: 'Peças atemporais desenvolvidas com acabamentos artesanais',
+  },
+  {
+    name: 'Geek & Dev',
+    heading: 'Space Grotesk',
+    body: 'JetBrains Mono',
+    desc: 'Identidade tech para desenvolvedores, produtos digitais e Web3',
+    tag: 'Devs & Web3',
+    sample: 'Fullstack Dev & Open Source',
+    subsample: 'Construindo aplicações modernas de alta performance em nuvem',
+  },
+  {
+    name: 'Vanguarda Criativa',
+    heading: 'Syne',
+    body: 'Plus Jakarta Sans',
+    desc: 'Personalidade marcante para marcas artísticas e autorais',
+    tag: 'Artes & Design',
+    sample: 'Direção Criativa & Fotografia Autoral',
+    subsample: 'Contando histórias visuais autênticas com estética marcante',
+  },
 ];
 
 const BLOCK_ANIMATIONS: { id: BlockAnimation; label: string; desc: string; icon: string }[] = [
@@ -1153,33 +1202,49 @@ export function ThemeEditor({ theme, onChangeTheme }: ThemeEditorProps) {
       </div>
 
       {/* 7. SELETOR COMPLETO DE FONTES & TIPOGRAFIA */}
-      <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 space-y-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1.5">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
-              <Type className="w-3.5 h-3.5 text-sky-400" />
-              Seletor de Fontes & Tipografia Global
+      <div className="bg-slate-900/60 border border-slate-800/80 rounded-2xl p-4 sm:p-5 space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 sm:gap-2">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-1.5 min-w-0">
+              <Type className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+              <span>Tipografia & Fontes da Marca</span>
             </h3>
             <InfoTooltip
               title="Tipografia Global"
               text="Escolha fontes do Google Fonts para os títulos principais e para o corpo do texto que são aplicadas automaticamente em todo o BioLink."
             />
           </div>
-          <span className="text-[10px] text-sky-400 font-mono">Google Webfonts</span>
+          <a
+            href="https://fonts.google.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1 text-[11px] font-mono text-sky-400 hover:text-sky-300 transition-colors shrink-0"
+            title="Explorar o catálogo oficial do Google Fonts"
+          >
+            <span>Google Fonts</span>
+            <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
+          </a>
         </div>
 
-        {/* 1-Click Font Pairings */}
+        {/* 1-Click Font Pairings - Type Specimen Format */}
         <div>
-          <div className="flex items-center gap-1 mb-2">
-            <label className="text-[11px] text-slate-400 font-medium">
-              Combinações Tipográficas Harmonizadas (1-Clique):
-            </label>
-            <InfoTooltip text="Pares de fontes selecionados por designers que garantem harmonia entre títulos marcantes e textos de alta legibilidade." />
+          <div className="flex items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs text-slate-300 font-semibold">
+                Combinações Tipográficas Harmonizadas (1-Clique)
+              </label>
+              <InfoTooltip text="Pares de fontes selecionados por designers que combinam perfeitamente títulos marcantes e textos de alta legibilidade." />
+            </div>
+            <span className="text-[10px] text-sky-400/90 font-mono shrink-0 hidden sm:inline">Pares Recomendados</span>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {FONT_PAIRINGS.map((fp, i) => (
-              <Tooltip key={i} content={`Aplicar combinação: ${fp.name} (${fp.desc})`}>
+
+          <div className="flex flex-col gap-2.5">
+            {FONT_PAIRINGS.map((fp, i) => {
+              const isSelected = theme.fontHeading === fp.heading && theme.fontBody === fp.body;
+
+              return (
                 <button
+                  key={i}
                   type="button"
                   onClick={() => {
                     onChangeTheme({
@@ -1188,30 +1253,63 @@ export function ThemeEditor({ theme, onChangeTheme }: ThemeEditorProps) {
                       fontBody: fp.body,
                     });
                   }}
-                  className={`w-full p-3 rounded-xl border text-left transition-all ${
-                    theme.fontHeading === fp.heading && theme.fontBody === fp.body
-                      ? 'bg-sky-500/20 border-sky-400 text-sky-200 shadow-md ring-1 ring-sky-400/40'
-                      : 'bg-slate-950 border-slate-800 hover:border-slate-700 text-slate-300'
+                  className={`w-full p-3.5 rounded-2xl border text-left transition-all relative overflow-hidden group ${
+                    isSelected
+                      ? 'bg-gradient-to-r from-sky-950/40 via-slate-950 to-slate-950 border-sky-400/80 ring-2 ring-sky-400/30 shadow-lg shadow-sky-950/30'
+                      : 'bg-slate-950/90 border-slate-800/90 hover:border-slate-700 hover:bg-slate-900/60'
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-xs font-bold text-slate-200">{fp.name}</span>
-                    <span className="text-[10px] text-sky-400 font-mono">
-                      {fp.heading.split(' ')[0]} + {fp.body.split(' ')[0]}
-                    </span>
+                  {/* Top Bar: Name, Badges & Selected State */}
+                  <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span
+                        style={{ fontFamily: fp.heading }}
+                        className="text-sm sm:text-base font-bold text-slate-100 group-hover:text-white transition-colors truncate"
+                      >
+                        {fp.name}
+                      </span>
+                      {fp.tag && (
+                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-slate-900 border border-slate-800 text-slate-400 shrink-0 hidden xs:inline">
+                          {fp.tag}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-sky-500/10 text-sky-300 border border-sky-500/20 whitespace-nowrap">
+                        {fp.heading} + {fp.body}
+                      </span>
+                      {isSelected ? (
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                          <Check className="w-3 h-3 text-emerald-400" />
+                          <span>Em Uso</span>
+                        </span>
+                      ) : (
+                        <span className="text-[10px] font-medium px-2 py-0.5 rounded-md text-slate-400 group-hover:text-slate-200 border border-transparent group-hover:border-slate-700 transition-all hidden sm:inline">
+                          Aplicar
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <p className="text-[11px] text-slate-400">{fp.desc}</p>
-                  <div className="mt-2 pt-2 border-t border-slate-800 flex items-center justify-between text-xs">
-                    <span style={{ fontFamily: fp.heading }} className="font-bold text-slate-100">
-                      Título de Exemplo
-                    </span>
-                    <span style={{ fontFamily: fp.body }} className="text-slate-400 text-[11px]">
-                      Texto de apoio
-                    </span>
+
+                  {/* Body: Specimen Sample Demonstration */}
+                  <div className="p-2.5 rounded-xl bg-slate-900/60 border border-slate-800/70 space-y-1">
+                    <p
+                      style={{ fontFamily: fp.heading }}
+                      className="text-xs sm:text-[13px] font-bold text-slate-200 group-hover:text-white transition-colors truncate"
+                    >
+                      {fp.sample}
+                    </p>
+                    <p
+                      style={{ fontFamily: fp.body }}
+                      className="text-[11px] text-slate-400 leading-relaxed truncate"
+                    >
+                      {fp.subsample}
+                    </p>
                   </div>
                 </button>
-              </Tooltip>
-            ))}
+              );
+            })}
           </div>
         </div>
 
