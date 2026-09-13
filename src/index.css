@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@theme {
+  /* Único breakpoint de container remanescente: apenas para ajustes sutis de
+     tamanho/tipografia (ex.: @sm:text-base, @sm:p-4) dentro da coluna de conteúdo.
+     A alternância de layout (empilhado ↔ lado a lado) foi removida — os blocos
+     renderizam sempre em coluna única. */
+  --container-sm: 26rem; /* 416px */
+}
+
+:root {
+  /* Identidade Visual Exiba */
+  --color-petroleo: #0F6E56;
+  --color-petroleo-dark: #0B5643;
+  --color-petroleo-light: #E7F3F0;
+  --color-ambar: #BA7517;
+  --color-ambar-dark: #8B530F;
+  --color-ambar-light: #FAEEDA;
+  --color-ambar-border: #FAC775;
+}
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari, Edge and Opera */
+  .scrollbar-none::-webkit-scrollbar,
+  .no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-none,
+  .no-scrollbar {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
+  }
+
+  /* Utilitários Verde-Petróleo (#0F6E56) - Cor Primária */
+  .bg-petroleo {
+    background-color: #0F6E56;
+  }
+  .bg-petroleo-dark,
+  .hover\:bg-petroleo-dark:hover {
+    background-color: #0B5643;
+  }
+  .bg-petroleo-light {
+    background-color: #E7F3F0;
+  }
+  .text-petroleo {
+    color: #0F6E56;
+  }
+  .text-petroleo-dark {
+    color: #0B5643;
+  }
+  .border-petroleo {
+    border-color: #0F6E56;
+  }
+  .border-petroleo-light {
+    border-color: #D1EAE3;
+  }
+  .shadow-petroleo {
+    box-shadow: 0 10px 25px -5px rgba(15, 110, 86, 0.25);
+  }
+
+  /* Utilitários Âmbar (#BA7517 / #FAEEDA / #FAC775) - Cor Secundária */
+  .bg-ambar {
+    background-color: #BA7517;
+  }
+  .bg-ambar-light {
+    background-color: #FAEEDA;
+  }
+  .text-ambar {
+    color: #BA7517;
+  }
+  .text-ambar-dark {
+    color: #8B530F;
+  }
+  .border-ambar {
+    border-color: #BA7517;
+  }
+  .border-ambar-light {
+    border-color: #FAC775;
+  }
+  .badge-ambar {
+    background-color: #FAEEDA;
+    border: 1px solid #FAC775;
+    color: #8B530F;
+  }
+}
+
+/* Custom Interactive Effects & Animations */
+@keyframes effect-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(15, 110, 86, 0.5);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 8px rgba(15, 110, 86, 0);
+  }
+}
+
+@keyframes effect-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 6px rgba(15, 110, 86, 0.6));
+    box-shadow: 0 0 15px rgba(15, 110, 86, 0.4);
+  }
+  50% {
+    filter: drop-shadow(0 0 16px rgba(15, 110, 86, 0.9));
+    box-shadow: 0 0 25px rgba(15, 110, 86, 0.7);
+  }
+}
+
+@keyframes effect-wobble {
+  0%, 100% { transform: translateX(0%); }
+  15% { transform: translateX(-4px) rotate(-1deg); }
+  30% { transform: translateX(4px) rotate(1deg); }
+  45% { transform: translateX(-2px) rotate(-0.5deg); }
+  60% { transform: translateX(2px) rotate(0.5deg); }
+  75% { transform: translateX(-1px) rotate(-0.2deg); }
+}
+
+@keyframes effect-shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.btn-effect-pulse {
+  animation: effect-pulse 2s infinite ease-in-out;
+}
+
+.btn-effect-glow {
+  animation: effect-glow 2.5s infinite ease-in-out;
+}
+
+.btn-effect-wobble:hover {
+  animation: effect-wobble 0.8s ease-in-out;
+}
+
+.btn-effect-bounce:hover {
+  transform: translateY(-4px);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-effect-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-effect-shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.25) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  animation: effect-shimmer 2.8s infinite;
+  pointer-events: none;
+}

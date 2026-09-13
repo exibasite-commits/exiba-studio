@@ -1,0 +1,24 @@
+<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="exiba-sym-blue-purple" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#0066FF" />
+      <stop offset="50%" stop-color="#4F46E5" />
+      <stop offset="100%" stop-color="#9333EA" />
+    </linearGradient>
+    <linearGradient id="exiba-sym-play-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="100%" stop-color="#A855F7" />
+    </linearGradient>
+  </defs>
+
+  <rect width="100" height="100" rx="24" fill="#0F172A" />
+
+  <!-- Top bar -->
+  <path d="M 22 24 H 78 C 82 24 85 27 82 30 L 78 36 C 76 38 74 38 70 38 H 22 C 16 38 12 34 12 28 C 12 22 16 24 22 24 Z" fill="url(#exiba-sym-blue-purple)" />
+
+  <!-- Center Play Triangle -->
+  <path d="M 26 42 L 62 54 L 26 66 Z" fill="url(#exiba-sym-play-grad)" />
+
+  <!-- Bottom bar -->
+  <path d="M 22 76 H 78 C 82 76 85 73 82 70 L 78 64 C 76 62 74 62 70 62 H 22 C 16 62 12 66 12 72 C 12 78 16 76 22 76 Z" fill="url(#exiba-sym-blue-purple)" />
+</svg>
