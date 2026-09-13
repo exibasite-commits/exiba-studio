@@ -632,9 +632,9 @@ function MainApp() {
           </div>
 
 
-          {/* Active Tab Scrollable Form Content with Fixed Padding and Row Gap Grid */}
+          {/* Active Tab Scrollable Form Content with Generous Respiro/Padding and Row Gap Grid */}
           <main
-            className="flex-1 overflow-y-auto p-6 pb-32 lg:pb-10 scroll-padding-top-24 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent"
+            className="flex-1 overflow-y-auto px-5 sm:px-6 pt-6 sm:pt-7 lg:pt-8 pb-32 lg:pb-12 scroll-padding-top-28 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent"
           >
             <div className="grid grid-cols-1 gap-6 w-full max-w-full">
               <AnimatePresence mode="wait">

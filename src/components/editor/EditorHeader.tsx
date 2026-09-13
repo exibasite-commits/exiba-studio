@@ -88,7 +88,7 @@ export function EditorHeader({
   };
 
   return (
-    <header className="hidden lg:flex px-4 py-3 shrink-0 flex-col gap-2.5 relative">
+    <header className="hidden lg:flex px-4 pt-3 pb-3.5 shrink-0 flex-col gap-2.5 relative">
       {/* Informative Save Confirmation Toast */}
       <AnimatePresence>
         {showToast && (
@@ -171,10 +171,10 @@ export function EditorHeader({
               <button
                 type="button"
                 onClick={onOpenUpgrade}
-                className="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-extrabold text-xs shadow-md flex items-center gap-1.5 shrink-0 active:scale-95 transition-all"
+                className="px-2.5 py-1.5 rounded-lg border border-amber-500/35 hover:border-amber-400/60 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 hover:text-amber-200 font-semibold text-xs transition-all flex items-center gap-1.5 shrink-0 active:scale-95"
                 aria-label="Upgrade Pro"
               >
-                <Sparkles className="w-3.5 h-3.5 fill-slate-950" />
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                 <span>Virar Pro</span>
               </button>
             </Tooltip>

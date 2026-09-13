@@ -301,44 +301,65 @@ export function ThemeEditor({ theme, onChangeTheme }: ThemeEditorProps) {
           </div>
         </div>
 
-        {/* Custom Color Input */}
-        <div className="p-3 bg-slate-950 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
-            <input
-              type="color"
-              value={getValidPickerHex(theme.accentColor, '#38bdf8')}
-              onChange={(e) => updateField('accentColor', e.target.value)}
-              className="w-8 h-8 rounded-lg border-0 cursor-pointer bg-transparent shrink-0"
-              title="Clique para escolher a cor no seletor de cores do sistema"
-            />
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-semibold text-slate-200 block">Cor Personalizada Hex</span>
-                <InfoTooltip text="Insira ou selecione a cor exata da identidade visual da sua empresa ou perfil." />
-              </div>
+        {/* Custom Color Inputs - Separated Stacked Blocks */}
+        <div className="space-y-2.5 pt-1">
+          {/* Bloco 1: Cor Primária Global / Fundo do Botão */}
+          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800/90 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
               <input
-                type="text"
-                value={theme.accentColor}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  updateField('accentColor', val ? normalizeHex(val) : '#38bdf8');
-                }}
-                className="w-24 bg-slate-900 border border-slate-800 rounded px-1.5 py-0.5 text-[11px] font-mono text-slate-200 uppercase mt-0.5"
+                type="color"
+                value={getValidPickerHex(theme.accentColor, '#38bdf8')}
+                onChange={(e) => updateField('accentColor', e.target.value)}
+                className="w-8 h-8 rounded-lg border border-slate-700/80 cursor-pointer bg-transparent shrink-0 p-0.5"
+                title="Clique para escolher a cor principal no seletor de cores"
               />
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-semibold text-slate-200">Cor Personalizada Hex</span>
+                  <InfoTooltip text="Insira ou selecione a cor exata da identidade visual da sua empresa ou perfil." />
+                </div>
+                <span className="text-[11px] text-slate-400 block truncate">Destaque de botões e links principais</span>
+              </div>
             </div>
+            <input
+              type="text"
+              value={theme.accentColor}
+              onChange={(e) => {
+                const val = e.target.value;
+                updateField('accentColor', val ? normalizeHex(val) : '#38bdf8');
+              }}
+              className="w-24 bg-slate-900 border border-slate-700/80 rounded-lg px-2 py-1 text-xs font-mono text-slate-200 uppercase text-center focus:border-sky-500 focus:outline-none shrink-0"
+              placeholder="#38BDF8"
+            />
           </div>
 
-          <div className="flex items-center justify-between sm:justify-end gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800/80">
-            <div className="flex items-center gap-1">
-              <span className="text-[11px] text-slate-400">Texto no Botão:</span>
-              <InfoTooltip text="Cor do texto ou ícone que fica sobre os botões primários (use branco para fundos escuros e preto para fundos claros)." />
+          {/* Bloco 2: Cor do Texto no Botão */}
+          <div className="p-3 bg-slate-950 rounded-xl border border-slate-800/90 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <input
+                type="color"
+                value={getValidPickerHex(theme.accentTextColor, '#ffffff')}
+                onChange={(e) => updateField('accentTextColor', e.target.value)}
+                className="w-8 h-8 rounded-lg border border-slate-700/80 cursor-pointer bg-transparent shrink-0 p-0.5"
+                title="Clique para escolher a cor do texto no seletor de cores"
+              />
+              <div className="min-w-0">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-semibold text-slate-200">Cor do Texto no Botão</span>
+                  <InfoTooltip text="Cor do texto ou ícone que fica sobre os botões primários (use branco para fundos escuros e preto para fundos claros)." />
+                </div>
+                <span className="text-[11px] text-slate-400 block truncate">Texto e ícones sobre o botão principal</span>
+              </div>
             </div>
             <input
-              type="color"
-              value={getValidPickerHex(theme.accentTextColor, '#ffffff')}
-              onChange={(e) => updateField('accentTextColor', e.target.value)}
-              className="w-7 h-7 rounded border-0 cursor-pointer bg-transparent shrink-0"
-              title="Cor do texto e ícones dentro dos botões destacados"
+              type="text"
+              value={theme.accentTextColor || '#ffffff'}
+              onChange={(e) => {
+                const val = e.target.value;
+                updateField('accentTextColor', val ? normalizeHex(val) : '#ffffff');
+              }}
+              className="w-24 bg-slate-900 border border-slate-700/80 rounded-lg px-2 py-1 text-xs font-mono text-slate-200 uppercase text-center focus:border-sky-500 focus:outline-none shrink-0"
+              placeholder="#FFFFFF"
             />
           </div>
         </div>
