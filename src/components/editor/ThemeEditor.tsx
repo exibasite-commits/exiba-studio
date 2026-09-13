@@ -1313,99 +1313,111 @@ export function ThemeEditor({ theme, onChangeTheme }: ThemeEditorProps) {
           </div>
         </div>
 
-        {/* Individual Font Selectors */}
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 pt-2">
-          {/* Heading Font */}
-          <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800/90 space-y-3">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-1.5 min-w-0">
-                <label className="text-xs text-slate-200 font-bold block truncate">
-                  Fonte dos Títulos
-                </label>
-                <InfoTooltip text="Fonte aplicada no nome de perfil, cabeçalhos de seções e títulos dos cards." />
-              </div>
-              <a
-                href={`https://fonts.google.com/specimen/${theme.fontHeading.replace(/\s+/g, '+')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={`Abrir ${theme.fontHeading} no Google Fonts`}
-                className="flex items-center gap-1 text-[11px] text-sky-400 font-mono hover:text-sky-300 hover:underline transition-colors shrink-0"
-              >
-                <span>Google Fonts</span>
-                <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
-              </a>
+        {/* Individual Custom Font Pickers */}
+        <div className="pt-3 border-t border-slate-800/80 space-y-3">
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5">
+              <label className="text-xs text-slate-300 font-semibold">
+                Personalização Individual de Fontes
+              </label>
+              <InfoTooltip text="Caso queira selecionar fontes específicas manualmente em vez de usar as combinações prontas de 1-clique." />
             </div>
-
-            <select
-              value={theme.fontHeading}
-              onChange={(e) => updateField('fontHeading', e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700/60 rounded-xl px-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-500 font-medium cursor-pointer"
-              title="Selecione a fonte para títulos e cabeçalhos"
-            >
-              {FONT_OPTIONS.map((f) => (
-                <option key={f.id} value={f.id}>
-                  {f.name} — ({f.category})
-                </option>
-              ))}
-            </select>
-
-            <div
-              className="p-3 rounded-xl bg-slate-900/80 border border-slate-800/60 text-center"
-              style={{ fontFamily: theme.fontHeading }}
-            >
-              <span className="text-sm font-bold text-slate-100 block">
-                {theme.fontHeading} • Título em Destaque
-              </span>
-              <span className="text-[11px] text-slate-400">
-                1234567890 • ABCDEFGHIJKLMNOPQRSTUVWXYZ
-              </span>
-            </div>
+            <span className="text-[10px] text-slate-400 font-mono">Seleção Manual</span>
           </div>
 
-          {/* Body Font */}
-          <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800/90 space-y-3">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-1.5 min-w-0">
-                <label className="text-xs text-slate-200 font-bold block truncate">
-                  Fonte do Corpo & Botões
-                </label>
-                <InfoTooltip text="Fonte aplicada nas biografias, textos explicativos, rótulos de botões e links." />
+          <div className="grid grid-cols-1 gap-3.5">
+            {/* Heading Font */}
+            <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800/90 space-y-3">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5">
+                  <label className="text-xs text-slate-200 font-bold block">
+                    Fonte dos Títulos
+                  </label>
+                  <InfoTooltip text="Fonte aplicada no nome de perfil, cabeçalhos de seções e títulos dos cards." />
+                </div>
+                <a
+                  href={`https://fonts.google.com/specimen/${theme.fontHeading.replace(/\s+/g, '+')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`Abrir ${theme.fontHeading} no Google Fonts`}
+                  className="flex items-center gap-1 text-[11px] text-sky-400 font-mono hover:text-sky-300 hover:underline transition-colors shrink-0"
+                >
+                  <span>Google Fonts</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
+                </a>
               </div>
-              <a
-                href={`https://fonts.google.com/specimen/${theme.fontBody.replace(/\s+/g, '+')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={`Abrir ${theme.fontBody} no Google Fonts`}
-                className="flex items-center gap-1 text-[11px] text-sky-400 font-mono hover:text-sky-300 hover:underline transition-colors shrink-0"
+
+              <select
+                value={theme.fontHeading}
+                onChange={(e) => updateField('fontHeading', e.target.value)}
+                className="w-full bg-slate-900 border border-slate-700/60 rounded-xl px-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-500 font-medium cursor-pointer"
+                title="Selecione a fonte para títulos e cabeçalhos"
               >
-                <span>Google Fonts</span>
-                <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
-              </a>
+                {FONT_OPTIONS.map((f) => (
+                  <option key={f.id} value={f.id}>
+                    {f.name} — ({f.category})
+                  </option>
+                ))}
+              </select>
+
+              <div
+                className="p-3 rounded-xl bg-slate-900/80 border border-slate-800/60 text-center space-y-1"
+                style={{ fontFamily: theme.fontHeading }}
+              >
+                <span className="text-sm font-bold text-slate-100 block truncate">
+                  {theme.fontHeading} • Título em Destaque
+                </span>
+                <span className="text-[11px] text-slate-400 font-mono block truncate">
+                  1234567890 • ABCDEFGHIJKLMNOPQRSTUVWXYZ
+                </span>
+              </div>
             </div>
 
-            <select
-              value={theme.fontBody}
-              onChange={(e) => updateField('fontBody', e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700/60 rounded-xl px-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-500 font-medium cursor-pointer"
-              title="Selecione a fonte para o corpo do texto e botões"
-            >
-              {FONT_OPTIONS.map((f) => (
-                <option key={f.id} value={f.id}>
-                  {f.name} — ({f.category})
-                </option>
-              ))}
-            </select>
+            {/* Body Font */}
+            <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800/90 space-y-3">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5">
+                  <label className="text-xs text-slate-200 font-bold block">
+                    Fonte do Corpo & Botões
+                  </label>
+                  <InfoTooltip text="Fonte aplicada nas biografias, textos explicativos, rótulos de botões e links." />
+                </div>
+                <a
+                  href={`https://fonts.google.com/specimen/${theme.fontBody.replace(/\s+/g, '+')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={`Abrir ${theme.fontBody} no Google Fonts`}
+                  className="flex items-center gap-1 text-[11px] text-sky-400 font-mono hover:text-sky-300 hover:underline transition-colors shrink-0"
+                >
+                  <span>Google Fonts</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
+                </a>
+              </div>
 
-            <div
-              className="p-3 rounded-xl bg-slate-900/80 border border-slate-800/60 text-center"
-              style={{ fontFamily: theme.fontBody }}
-            >
-              <span className="text-xs font-medium text-slate-200 block">
-                {theme.fontBody} • Texto fluido e legível para botões e descrições
-              </span>
-              <span className="text-[10px] text-slate-400">
-                1234567890 • abcdefghijklmnopqrstuvwxyz
-              </span>
+              <select
+                value={theme.fontBody}
+                onChange={(e) => updateField('fontBody', e.target.value)}
+                className="w-full bg-slate-900 border border-slate-700/60 rounded-xl px-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-500 font-medium cursor-pointer"
+                title="Selecione a fonte para o corpo do texto e botões"
+              >
+                {FONT_OPTIONS.map((f) => (
+                  <option key={f.id} value={f.id}>
+                    {f.name} — ({f.category})
+                  </option>
+                ))}
+              </select>
+
+              <div
+                className="p-3 rounded-xl bg-slate-900/80 border border-slate-800/60 text-center space-y-1"
+                style={{ fontFamily: theme.fontBody }}
+              >
+                <span className="text-xs font-medium text-slate-200 block truncate">
+                  {theme.fontBody} • Texto fluido e legível para botões e descrições
+                </span>
+                <span className="text-[11px] text-slate-400 font-mono block truncate">
+                  1234567890 • abcdefghijklmnopqrstuvwxyz
+                </span>
+              </div>
             </div>
           </div>
         </div>
