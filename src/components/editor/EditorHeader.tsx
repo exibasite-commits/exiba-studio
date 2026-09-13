@@ -108,10 +108,10 @@ export function EditorHeader({
         )}
       </AnimatePresence>
 
-      {/* Top row: Brand & Status (Left) + Core Action buttons (Right) */}
-      <div className="flex items-center justify-between gap-3 w-full">
+      {/* Row 1: Brand & Status (Left) + Primary Global Actions (Right) */}
+      <div className="flex items-center justify-between gap-2.5 w-full">
         {/* Left: Back button + Logo + Compact Save Status */}
-        <div className="flex items-center gap-2.5 min-w-0">
+        <div className="flex items-center gap-2 min-w-0">
           {onBackToDashboard && (
             <Tooltip content="Voltar para a lista dos seus Bio Sites">
               <button
@@ -137,7 +137,7 @@ export function EditorHeader({
               }
             >
               <div
-                className={`flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-medium border transition-all cursor-default ${
+                className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-medium border transition-all cursor-default shrink-0 ${
                   isSaving
                     ? 'bg-amber-500/10 border-amber-500/30 text-amber-300'
                     : saveStatus === 'saved'
@@ -164,83 +164,8 @@ export function EditorHeader({
           </div>
         </div>
 
-        {/* Right: Tools (Focus, Undo/Redo, Analytics) + Global Actions (Pro, Publicar) */}
-        <div className="flex items-center gap-2 shrink-0">
-          {/* Editor Utilities Group */}
-          <div className="flex items-center gap-1 bg-slate-950/80 p-0.5 rounded-lg border border-slate-800">
-            {/* Undo / Redo Global Controls */}
-            <Tooltip content="Desfazer última alteração (Ctrl+Z)">
-              <button
-                type="button"
-                onClick={onUndo}
-                disabled={!canUndo}
-                className={`p-1.5 rounded-md text-xs flex items-center transition-all ${
-                  canUndo
-                    ? 'text-slate-200 hover:text-[#0F6E56] hover:bg-slate-800 active:scale-95'
-                    : 'text-slate-600 cursor-not-allowed opacity-40'
-                }`}
-                aria-label="Desfazer alteração"
-              >
-                <Undo2 className="w-3.5 h-3.5" />
-              </button>
-            </Tooltip>
-            <Tooltip content="Refazer alteração (Ctrl+Y)">
-              <button
-                type="button"
-                onClick={onRedo}
-                disabled={!canRedo}
-                className={`p-1.5 rounded-md text-xs flex items-center transition-all ${
-                  canRedo
-                    ? 'text-slate-200 hover:text-[#0F6E56] hover:bg-slate-800 active:scale-95'
-                    : 'text-slate-600 cursor-not-allowed opacity-40'
-                }`}
-                aria-label="Refazer alteração"
-              >
-                <Redo2 className="w-3.5 h-3.5" />
-              </button>
-            </Tooltip>
-
-            {/* Focus Mode / Fullscreen Toggle Button */}
-            {onToggleFocusMode && (
-              <Tooltip
-                content={
-                  isFocusMode
-                    ? 'Sair do Modo Foco (Mostrar painel de edição)'
-                    : 'Modo Foco / Tela Cheia (Expandir prévia ao vivo)'
-                }
-              >
-                <button
-                  type="button"
-                  onClick={onToggleFocusMode}
-                  className={`p-1.5 rounded-md border transition-all flex items-center ${
-                    isFocusMode
-                      ? 'bg-sky-500/20 text-sky-300 border-sky-500/40 shadow-sm'
-                      : 'border-transparent text-slate-400 hover:text-white hover:bg-slate-800'
-                  }`}
-                  aria-label="Modo Foco"
-                >
-                  {isFocusMode ? (
-                    <Minimize2 className="w-3.5 h-3.5 text-sky-400" />
-                  ) : (
-                    <Maximize2 className="w-3.5 h-3.5" />
-                  )}
-                </button>
-              </Tooltip>
-            )}
-
-            {/* Analytics button */}
-            <Tooltip content="Ver estatísticas e relatório de cliques do site">
-              <button
-                type="button"
-                onClick={onOpenAnalytics}
-                className="p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-                aria-label="Estatísticas de cliques"
-              >
-                <BarChart3 className="w-3.5 h-3.5" />
-              </button>
-            </Tooltip>
-          </div>
-
+        {/* Right: Virar Pro + Publicar */}
+        <div className="flex items-center gap-1.5 shrink-0">
           {plan !== 'pro' && onOpenUpgrade && (
             <Tooltip content="Faça upgrade para o Plano Pro: use seu próprio domínio e remova a marca d'água">
               <button
@@ -255,7 +180,7 @@ export function EditorHeader({
             </Tooltip>
           )}
 
-          <Tooltip content="Publicar, exportar código HTML e gerar QR Code de alta resolução">
+          <Tooltip content="Publicar, exportar código HTML e gerar QR Code">
             <button
               type="button"
               onClick={onOpenExport}
@@ -269,12 +194,13 @@ export function EditorHeader({
         </div>
       </div>
 
-      {/* Middle row: Template quick switcher & AI generation tool */}
-      <div className="flex items-center justify-between gap-3 w-full bg-slate-950/80 p-2 rounded-xl border border-slate-800/80">
-        <div className="flex items-center gap-2 flex-1 min-w-0">
-          <label htmlFor="header-template-select" className="text-xs text-slate-400 shrink-0 font-semibold flex items-center gap-1.5 cursor-pointer">
+      {/* Row 2: Model Switcher & AI Generator & Tools Toolbar */}
+      <div className="flex items-center justify-between gap-2 w-full bg-slate-950/80 p-1.5 rounded-xl border border-slate-800/80">
+        {/* Model Select */}
+        <div className="flex items-center gap-1.5 flex-1 min-w-0">
+          <label htmlFor="header-template-select" className="text-xs text-slate-400 shrink-0 font-semibold flex items-center gap-1 cursor-pointer">
             <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Modelo:</span>
+            <span className="hidden sm:inline">Modelo:</span>
           </label>
           <div className="flex-1 min-w-0">
             <select
@@ -282,7 +208,7 @@ export function EditorHeader({
               aria-label="Selecionar Modelo Pronto"
               onChange={(e) => onSelectTemplate(e.target.value)}
               value={currentTemplateId || ''}
-              className="w-full min-w-0 bg-slate-900 border border-slate-700/80 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-[#0F6E56] focus:ring-1 focus:ring-[#0F6E56] transition-colors truncate font-medium cursor-pointer hover:bg-slate-850"
+              className="w-full min-w-0 bg-slate-900 border border-slate-700/80 text-slate-200 text-xs rounded-lg px-2 py-1.5 focus:outline-none focus:border-[#0F6E56] focus:ring-1 focus:ring-[#0F6E56] transition-colors truncate font-medium cursor-pointer hover:bg-slate-850"
             >
               <option value="" disabled>
                 Trocar modelo pronto...
@@ -296,48 +222,122 @@ export function EditorHeader({
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
-          {onOpenAiModal && (
-            <Tooltip content="Gerar site completo instantâneo com Inteligência Artificial">
+        {/* AI Action Button */}
+        {onOpenAiModal && (
+          <Tooltip content="Gerar site completo instantâneo com Inteligência Artificial">
+            <button
+              type="button"
+              onClick={onOpenAiModal}
+              className="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-emerald-600/20 hover:from-emerald-500/30 hover:to-teal-500/30 text-emerald-300 border border-emerald-500/40 hover:border-emerald-400/60 transition-all flex items-center gap-1.5 text-xs shrink-0 font-bold shadow-sm active:scale-95 whitespace-nowrap"
+              aria-label="Gerar com IA"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
+              <span>Gerar com IA</span>
+            </button>
+          </Tooltip>
+        )}
+
+        {/* Quick Tools Divider */}
+        <div className="w-px h-4 bg-slate-800 shrink-0" />
+
+        {/* Tools (Undo, Redo, Focus, Analytics, Reset) */}
+        <div className="flex items-center gap-0.5 shrink-0">
+          <Tooltip content="Desfazer última alteração (Ctrl+Z)">
+            <button
+              type="button"
+              onClick={onUndo}
+              disabled={!canUndo}
+              className={`p-1.5 rounded-md text-xs flex items-center transition-all ${
+                canUndo
+                  ? 'text-slate-300 hover:text-[#0F6E56] hover:bg-slate-800 active:scale-95'
+                  : 'text-slate-600 cursor-not-allowed opacity-40'
+              }`}
+              aria-label="Desfazer alteração"
+            >
+              <Undo2 className="w-3.5 h-3.5" />
+            </button>
+          </Tooltip>
+
+          <Tooltip content="Refazer alteração (Ctrl+Y)">
+            <button
+              type="button"
+              onClick={onRedo}
+              disabled={!canRedo}
+              className={`p-1.5 rounded-md text-xs flex items-center transition-all ${
+                canRedo
+                  ? 'text-slate-300 hover:text-[#0F6E56] hover:bg-slate-800 active:scale-95'
+                  : 'text-slate-600 cursor-not-allowed opacity-40'
+              }`}
+              aria-label="Refazer alteração"
+            >
+              <Redo2 className="w-3.5 h-3.5" />
+            </button>
+          </Tooltip>
+
+          {onToggleFocusMode && (
+            <Tooltip
+              content={
+                isFocusMode
+                  ? 'Sair do Modo Foco (Mostrar painel de edição)'
+                  : 'Modo Foco / Tela Cheia (Expandir prévia ao vivo)'
+              }
+            >
               <button
                 type="button"
-                onClick={onOpenAiModal}
-                className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-emerald-600/20 hover:from-emerald-500/30 hover:to-teal-500/30 text-emerald-300 border border-emerald-500/40 hover:border-emerald-400/60 transition-all flex items-center gap-1.5 text-xs shrink-0 font-bold shadow-sm active:scale-95 whitespace-nowrap"
-                aria-label="Gerar com IA"
+                onClick={onToggleFocusMode}
+                className={`p-1.5 rounded-md transition-all flex items-center ${
+                  isFocusMode
+                    ? 'bg-sky-500/20 text-sky-300 border border-sky-500/40 shadow-sm'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                }`}
+                aria-label="Modo Foco"
               >
-                <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                <span>Gerar com IA</span>
+                {isFocusMode ? (
+                  <Minimize2 className="w-3.5 h-3.5 text-sky-400" />
+                ) : (
+                  <Maximize2 className="w-3.5 h-3.5" />
+                )}
               </button>
             </Tooltip>
           )}
+
+          <Tooltip content="Ver estatísticas e relatório de cliques do site">
+            <button
+              type="button"
+              onClick={onOpenAnalytics}
+              className="p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              aria-label="Estatísticas de cliques"
+            >
+              <BarChart3 className="w-3.5 h-3.5" />
+            </button>
+          </Tooltip>
 
           <Tooltip content="Restaurar valores e blocos padrão do modelo original">
             <button
               type="button"
               onClick={onReset}
-              className="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800 transition-colors flex items-center gap-1 text-xs shrink-0 font-medium active:scale-95"
+              className="p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
               aria-label="Restaurar padrão"
             >
-              <RotateCcw className="w-3 h-3" />
-              <span className="hidden sm:inline">Restaurar</span>
+              <RotateCcw className="w-3.5 h-3.5" />
             </button>
           </Tooltip>
         </div>
       </div>
 
-      {/* Bottom row: Sub-navigation 4 Main Tabs with CSS Grid */}
-      <nav className="grid grid-cols-4 gap-2 w-full bg-slate-950/90 p-1.5 rounded-xl border border-slate-800/80 shadow-inner">
+      {/* Row 3: Sub-navigation 4 Main Tabs with CSS Grid */}
+      <nav className="grid grid-cols-4 gap-1.5 w-full bg-slate-950/90 p-1.5 rounded-xl border border-slate-800/80 shadow-inner">
         <Tooltip content="Editar foto de perfil, capa, nome, biografia e SEO">
           <button
             type="button"
             onClick={() => onTabChange('profile')}
-            className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-lg text-xs font-semibold transition-all w-full ${
+            className={`flex items-center justify-center gap-1.5 py-2 px-1 rounded-lg text-xs font-semibold transition-all w-full ${
               activeTab === 'profile'
                 ? 'bg-[#0F6E56] text-white shadow-sm font-bold'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
             }`}
           >
-            <User className="w-4 h-4 shrink-0" />
+            <User className="w-3.5 h-3.5 shrink-0" />
             <span className="truncate">Perfil</span>
           </button>
         </Tooltip>
@@ -346,14 +346,14 @@ export function EditorHeader({
           <button
             type="button"
             onClick={() => onTabChange('blocks')}
-            className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-lg text-xs font-semibold transition-all w-full ${
+            className={`flex items-center justify-center gap-1.5 py-2 px-1 rounded-lg text-xs font-semibold transition-all w-full ${
               activeTab === 'blocks'
                 ? 'bg-[#0F6E56] text-white shadow-sm font-bold'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
             }`}
           >
-            <Layers className="w-4 h-4 shrink-0" />
-            <span className="truncate">Blocos & Pix</span>
+            <Layers className="w-3.5 h-3.5 shrink-0" />
+            <span className="truncate">Blocos</span>
           </button>
         </Tooltip>
 
@@ -361,13 +361,13 @@ export function EditorHeader({
           <button
             type="button"
             onClick={() => onTabChange('social')}
-            className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-lg text-xs font-semibold transition-all w-full ${
+            className={`flex items-center justify-center gap-1.5 py-2 px-1 rounded-lg text-xs font-semibold transition-all w-full ${
               activeTab === 'social'
                 ? 'bg-[#0F6E56] text-white shadow-sm font-bold'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
             }`}
           >
-            <Share2 className="w-4 h-4 shrink-0" />
+            <Share2 className="w-3.5 h-3.5 shrink-0" />
             <span className="truncate">Redes</span>
           </button>
         </Tooltip>
@@ -376,13 +376,13 @@ export function EditorHeader({
           <button
             type="button"
             onClick={() => onTabChange('theme')}
-            className={`flex items-center justify-center gap-1.5 py-2.5 px-2 rounded-lg text-xs font-semibold transition-all w-full ${
+            className={`flex items-center justify-center gap-1.5 py-2 px-1 rounded-lg text-xs font-semibold transition-all w-full ${
               activeTab === 'theme'
                 ? 'bg-[#0F6E56] text-white shadow-sm font-bold'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
             }`}
           >
-            <Palette className="w-4 h-4 shrink-0" />
+            <Palette className="w-3.5 h-3.5 shrink-0" />
             <span className="truncate">Tema</span>
           </button>
         </Tooltip>

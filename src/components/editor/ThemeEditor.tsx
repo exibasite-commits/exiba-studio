@@ -272,35 +272,32 @@ export function ThemeEditor({ theme, onChangeTheme }: ThemeEditorProps) {
               <InfoTooltip text="Cores calibradas para garantir alto contraste e acessibilidade visual em telas de smartphones." />
             </label>
           </div>
-          <div className="grid grid-cols-4 sm:grid-cols-6 gap-2">
-            {QUICK_BRAND_COLORS.map((c, i) => (
-              <Tooltip key={i} content={`Aplicar ${c.name} (${c.hex})`}>
-                <button
-                  type="button"
-                  onClick={() => handleQuickAccent(c.hex, c.text)}
-                  className={`w-full p-2 rounded-xl border flex flex-col items-center gap-1.5 transition-all text-center group ${
-                    theme.accentColor.toLowerCase() === c.hex.toLowerCase()
-                      ? 'border-sky-400 ring-2 ring-sky-500/40 bg-slate-800 shadow-md'
-                      : 'border-slate-800 bg-slate-950 hover:border-slate-700'
-                  }`}
-                >
-                  <div
-                    className="w-6 h-6 rounded-full shadow-inner border border-white/20 flex items-center justify-center"
+          <div className="flex flex-wrap items-center gap-2 p-2.5 bg-slate-950/70 rounded-xl border border-slate-800/80">
+            {QUICK_BRAND_COLORS.map((c, i) => {
+              const isSelected = theme.accentColor.toLowerCase() === c.hex.toLowerCase();
+              return (
+                <Tooltip key={i} content={`${c.name} (${c.hex})`}>
+                  <button
+                    type="button"
+                    onClick={() => handleQuickAccent(c.hex, c.text)}
+                    className={`relative w-8 h-8 rounded-full border transition-all flex items-center justify-center shadow-sm hover:scale-110 active:scale-95 ${
+                      isSelected
+                        ? 'ring-2 ring-sky-400 ring-offset-2 ring-offset-slate-900 border-white scale-105'
+                        : 'border-white/25 hover:border-white/70'
+                    }`}
                     style={{ backgroundColor: c.hex }}
+                    aria-label={c.name}
                   >
-                    {theme.accentColor.toLowerCase() === c.hex.toLowerCase() && (
+                    {isSelected && (
                       <Check
-                        className="w-3.5 h-3.5 drop-shadow"
+                        className="w-4 h-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]"
                         style={{ color: c.text }}
                       />
                     )}
-                  </div>
-                  <span className="text-[10px] font-semibold text-slate-300 truncate w-full group-hover:text-white">
-                    {c.name}
-                  </span>
-                </button>
-              </Tooltip>
-            ))}
+                  </button>
+                </Tooltip>
+              );
+            })}
           </div>
         </div>
 
