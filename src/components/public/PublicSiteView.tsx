@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getPublicSite, PublicSite, trackSiteView, trackBlockClick } from '../../api/db';
 import { BioSiteRenderer } from '../preview/BioSiteRenderer';
+import { updateDocumentMetaTags } from '../../utils/seoUtils';
 
 interface PublicSiteViewProps {
   slug: string;
@@ -18,6 +19,7 @@ export const PublicSiteView: React.FC<PublicSiteViewProps> = ({ slug }) => {
         if (cancelled) return;
         setSite(data);
         if (data) {
+          updateDocumentMetaTags(data.config.profile);
           trackSiteView(data.id).catch(() => {});
         }
       } finally {

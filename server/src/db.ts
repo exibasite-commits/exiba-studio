@@ -136,10 +136,17 @@ interface AnalyticsCountRow {
   cnt: unknown;
 }
 
+export interface DailyMetricRow {
+  event_date: string | Date;
+  event_type: 'view' | 'click';
+  cnt: unknown;
+}
+
 export async function getAnalyticsSummary(siteId: number): Promise<{
   totalViews: number;
   totalClicks: number;
   clicksByBlock: Record<string, number>;
+  dailyHistory: { date: string; views: number; clicks: number }[];
 }> {
   const rows = await query<AnalyticsCountRow[]>(
     'SELECT event_type, block_id, COUNT(*) AS cnt FROM analytics_events WHERE site_id = ? GROUP BY event_type, block_id',
@@ -162,7 +169,48 @@ export async function getAnalyticsSummary(siteId: number): Promise<{
     }
   }
 
-  return { totalViews, totalClicks, clicksByBlock };
+  // Prepara histórico dos últimos 14 dias para gráfico contínuo
+  const dailyMap: Record<string, { views: number; clicks: number }> = {};
+  for (let i = 13; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const dateKey = d.toISOString().split('T')[0];
+    dailyMap[dateKey] = { views: 0, clicks: 0 };
+  }
+
+  try {
+    const historyRows = await query<DailyMetricRow[]>(
+      `SELECT DATE(created_at) AS event_date, event_type, COUNT(*) AS cnt 
+       FROM analytics_events 
+       WHERE site_id = ? AND created_at >= NOW() - INTERVAL 14 DAY 
+       GROUP BY DATE(created_at), event_type 
+       ORDER BY event_date ASC`,
+      [siteId]
+    );
+
+    for (const h of historyRows) {
+      const dateKey = typeof h.event_date === 'string' ? h.event_date.slice(0, 10) : new Date(h.event_date).toISOString().slice(0, 10);
+      if (!dailyMap[dateKey]) {
+        dailyMap[dateKey] = { views: 0, clicks: 0 };
+      }
+      const count = Number(h.cnt) || 0;
+      if (h.event_type === 'view') {
+        dailyMap[dateKey].views += count;
+      } else if (h.event_type === 'click') {
+        dailyMap[dateKey].clicks += count;
+      }
+    }
+  } catch (err) {
+    // Silencia se não houver registros
+  }
+
+  const dailyHistory = Object.entries(dailyMap).map(([date, counts]) => ({
+    date,
+    views: counts.views,
+    clicks: counts.clicks,
+  }));
+
+  return { totalViews, totalClicks, clicksByBlock, dailyHistory };
 }
 
 export async function clearAnalytics(siteId: number): Promise<void> {

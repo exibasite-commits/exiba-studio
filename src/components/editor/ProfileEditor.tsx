@@ -238,6 +238,20 @@ export function ProfileEditor({ profile, onChange }: ProfileEditorProps) {
 
   const [isUploadingAvatar, setIsUploadingAvatar] = useState(false);
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
+  const [isUploadingOgImage, setIsUploadingOgImage] = useState(false);
+
+  const handleOgImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setIsUploadingOgImage(true);
+      try {
+        const result = await uploadMediaFile(file, { maxWidth: 1200, maxHeight: 630, quality: 0.85 });
+        handleFieldChange('seoOgImage', result.url);
+      } finally {
+        setIsUploadingOgImage(false);
+      }
+    }
+  };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -1782,24 +1796,18 @@ export function ProfileEditor({ profile, onChange }: ProfileEditorProps) {
 
                   <div className="flex flex-wrap items-center gap-2">
                     <label className="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-sky-500/20 text-sky-300 hover:bg-sky-500/30 border border-sky-500/40 text-[11px] font-semibold transition-all focus-within:ring-2 focus-within:ring-emerald-500/50">
-                      <Upload className="w-3 h-3" />
-                      <span>Fazer Upload</span>
+                      {isUploadingOgImage ? (
+                        <Loader2 className="w-3 h-3 animate-spin text-sky-300" />
+                      ) : (
+                        <Upload className="w-3 h-3" />
+                      )}
+                      <span>{isUploadingOgImage ? 'Enviando...' : 'Fazer Upload'}</span>
                       <input
                         type="file"
                         accept="image/*"
+                        disabled={isUploadingOgImage}
                         className="hidden"
-                        onChange={(e) => {
-                          const file = e.target.files?.[0];
-                          if (file) {
-                            const reader = new FileReader();
-                            reader.onloadend = () => {
-                              if (typeof reader.result === 'string') {
-                                handleFieldChange('seoOgImage', reader.result);
-                              }
-                            };
-                            reader.readAsDataURL(file);
-                          }
-                        }}
+                        onChange={handleOgImageUpload}
                       />
                     </label>
 

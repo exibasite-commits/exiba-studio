@@ -72,4 +72,52 @@ export function updateDocumentMetaTags(profile: ProfileConfig): void {
   if (image) {
     setMetaTag('twitter:image', image);
   }
+
+  // 5. Favicon Dinâmico (atualiza o ícone da aba do navegador para o avatar do perfil se existir)
+  const faviconUrl = profile.avatarUrl || '/favicon.svg';
+  let faviconEl = document.querySelector("link[rel*='icon']") as HTMLLinkElement | null;
+  if (!faviconEl) {
+    faviconEl = document.createElement('link');
+    faviconEl.rel = 'icon';
+    document.head.appendChild(faviconEl);
+  }
+  faviconEl.href = faviconUrl;
+
+  // 6. Link Canônico e OG URL
+  if (typeof window !== 'undefined') {
+    const canonicalUrl = window.location.href.split('?')[0];
+    let canonicalEl = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+    if (!canonicalEl) {
+      canonicalEl = document.createElement('link');
+      canonicalEl.rel = 'canonical';
+      document.head.appendChild(canonicalEl);
+    }
+    canonicalEl.href = canonicalUrl;
+    setPropertyTag('og:url', canonicalUrl);
+  }
+}
+
+/**
+ * Retorna os dados computados de SEO para prévia visual interativa (WhatsApp, Google, Redes)
+ */
+export function getSeoPreviewData(profile: ProfileConfig) {
+  const title =
+    profile.seoTitle?.trim() ||
+    (profile.name ? `${profile.name} | Exiba` : 'Exiba Studio');
+
+  const description =
+    profile.seoDescription?.trim() ||
+    profile.bio?.trim() ||
+    'Acesse meus links, cardápio, produtos, chave Pix e WhatsApp em um só lugar.';
+
+  const image =
+    profile.seoOgImage?.trim() ||
+    (profile.banner?.enabled && profile.banner.type === 'image' && profile.banner.url
+      ? profile.banner.url
+      : profile.avatarUrl || '');
+
+  const handle = profile.handle ? profile.handle.replace('@', '') : 'usuario';
+  const displayUrl = `exiba.site/${handle}`;
+
+  return { title, description, image, displayUrl };
 }
