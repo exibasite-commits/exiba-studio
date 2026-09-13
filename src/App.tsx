@@ -599,7 +599,7 @@ function MainApp() {
         {/* Left Pane: Visual Studio Editor with Rigid Grid and Sticky Header */}
         <aside
           className={`${
-            isFocusMode ? 'hidden' : 'w-full lg:w-[580px] xl:w-[640px] 2xl:w-[720px] flex'
+            isFocusMode ? 'hidden' : 'w-full lg:w-[470px] xl:w-[490px] 2xl:w-[540px] flex'
           } flex-col bg-slate-950 border-r border-slate-800/80 shrink-0 h-full overflow-hidden transition-all duration-300 relative ${
             mobileScreenMode === 'preview' ? 'hidden lg:flex' : 'flex'
           }`}

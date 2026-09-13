@@ -205,118 +205,129 @@ function LivePreviewPhoneComponent({
   return (
     <div className="flex-1 flex flex-col h-full bg-slate-950/90 border-l border-slate-800/80 overflow-hidden relative select-none">
       {/* Top Preview Control Bar */}
-      <header className="h-14 border-b border-slate-800/80 px-2.5 sm:px-4 flex items-center justify-between gap-2 bg-slate-900/90 backdrop-blur-xl shrink-0 z-30 overflow-x-auto scrollbar-none min-w-0">
+      <header className="h-14 border-b border-slate-800/80 px-2 sm:px-3.5 flex items-center justify-between gap-2 bg-slate-900/90 backdrop-blur-xl shrink-0 z-30 min-w-0 w-full overflow-hidden">
         {/* Left: Device & Frame Selection */}
         <div className="flex items-center gap-1.5 shrink-0">
-          {/* Device Type Buttons */}
-          <div className="flex items-center gap-0.5 sm:gap-1 bg-slate-950/80 p-0.5 sm:p-1 rounded-xl border border-slate-800/90 shadow-inner shrink-0">
-            <button
-              type="button"
-              title="iPhone 16 Pro (Moldura de Titânio)"
-              onClick={() => {
-                onDeviceChange('mobile');
-                setFrameStyle('iphone16');
-              }}
-              className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
-                deviceMode === 'mobile' && frameStyle === 'iphone16'
-                  ? 'bg-sky-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Smartphone className="w-3.5 h-3.5 shrink-0" />
-              <span className="hidden xl:inline">iPhone</span>
-            </button>
+          {/* Device Type Segmented Control */}
+          <div className="flex items-center gap-0.5 bg-slate-950/80 p-1 rounded-xl border border-slate-800/90 shadow-inner shrink-0">
+            <Tooltip content="iPhone 16 Pro (Moldura de Titânio)">
+              <button
+                type="button"
+                onClick={() => {
+                  onDeviceChange('mobile');
+                  setFrameStyle('iphone16');
+                }}
+                className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
+                  deviceMode === 'mobile' && frameStyle === 'iphone16'
+                    ? 'bg-sky-500 text-slate-950 shadow-md font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                aria-label="iPhone 16 Pro"
+              >
+                <Smartphone className="w-3.5 h-3.5 shrink-0" />
+                <span className="hidden 2xl:inline text-[11px]">iPhone</span>
+              </button>
+            </Tooltip>
 
-            <button
-              type="button"
-              title="Sem Moldura (Visualização Minimalista)"
-              onClick={() => {
-                onDeviceChange('mobile');
-                setFrameStyle('frameless');
-              }}
-              className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
-                deviceMode === 'mobile' && frameStyle === 'frameless'
-                  ? 'bg-sky-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 shrink-0" />
-              <span className="hidden xl:inline">Minimal</span>
-            </button>
+            <Tooltip content="Sem Moldura (Visualização Minimalista)">
+              <button
+                type="button"
+                onClick={() => {
+                  onDeviceChange('mobile');
+                  setFrameStyle('frameless');
+                }}
+                className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
+                  deviceMode === 'mobile' && frameStyle === 'frameless'
+                    ? 'bg-sky-500 text-slate-950 shadow-md font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                aria-label="Sem Moldura"
+              >
+                <Sparkles className="w-3.5 h-3.5 shrink-0" />
+                <span className="hidden 2xl:inline text-[11px]">Minimal</span>
+              </button>
+            </Tooltip>
 
-            <button
-              type="button"
-              title="Modo Nativo 1:1 (Ideal para Celular)"
-              onClick={() => {
-                onDeviceChange('mobile');
-                setFrameStyle('native');
-              }}
-              className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
-                deviceMode === 'mobile' && frameStyle === 'native'
-                  ? 'bg-sky-500 text-slate-950 shadow-md font-bold'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Maximize2 className="w-3.5 h-3.5 shrink-0" />
-              <span className="hidden xl:inline">Nativo</span>
-            </button>
+            <Tooltip content="Modo Nativo 1:1 (Escala Real de Celular)">
+              <button
+                type="button"
+                onClick={() => {
+                  onDeviceChange('mobile');
+                  setFrameStyle('native');
+                }}
+                className={`flex items-center gap-1 px-2 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
+                  deviceMode === 'mobile' && frameStyle === 'native'
+                    ? 'bg-sky-500 text-slate-950 shadow-md font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                aria-label="Modo Nativo"
+              >
+                <Maximize2 className="w-3.5 h-3.5 shrink-0" />
+                <span className="hidden 2xl:inline text-[11px]">Nativo</span>
+              </button>
+            </Tooltip>
 
-            <button
-              type="button"
-              title="Visualização Tablet / iPad"
-              onClick={() => onDeviceChange('tablet')}
-              className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
-                deviceMode === 'tablet'
-                  ? 'bg-sky-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Tablet className="w-3.5 h-3.5 shrink-0" />
-              <span className="hidden 2xl:inline">Tablet</span>
-            </button>
+            <div className="w-px h-3.5 bg-slate-800 mx-0.5 shrink-0" />
 
-            <button
-              type="button"
-              title="Visualização Desktop / Web"
-              onClick={() => onDeviceChange('desktop')}
-              className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all shrink-0 ${
-                deviceMode === 'desktop'
-                  ? 'bg-sky-500 text-slate-950 shadow-md'
-                  : 'text-slate-400 hover:text-slate-200'
-              }`}
-            >
-              <Monitor className="w-3.5 h-3.5 shrink-0" />
-              <span className="hidden 2xl:inline">Desktop</span>
-            </button>
+            <Tooltip content="Visualização Tablet / iPad">
+              <button
+                type="button"
+                onClick={() => onDeviceChange('tablet')}
+                className={`p-1.5 px-2 rounded-lg text-xs font-semibold transition-all shrink-0 ${
+                  deviceMode === 'tablet'
+                    ? 'bg-sky-500 text-slate-950 shadow-md font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                aria-label="Tablet"
+              >
+                <Tablet className="w-3.5 h-3.5 shrink-0" />
+              </button>
+            </Tooltip>
+
+            <Tooltip content="Visualização Desktop / Web">
+              <button
+                type="button"
+                onClick={() => onDeviceChange('desktop')}
+                className={`p-1.5 px-2 rounded-lg text-xs font-semibold transition-all shrink-0 ${
+                  deviceMode === 'desktop'
+                    ? 'bg-sky-500 text-slate-950 shadow-md font-bold'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+                aria-label="Desktop"
+              >
+                <Monitor className="w-3.5 h-3.5 shrink-0" />
+              </button>
+            </Tooltip>
           </div>
         </div>
 
-        {/* Center/Right: Live URL, Zoom & Studio Controls */}
+        {/* Right: Zoom, Fit, Copy Link, QR Code, Refresh, Fullscreen */}
         <div className="flex items-center gap-1.5 shrink-0">
           {/* Auto-Fit / Fit Screen Toggle */}
-          <button
-            type="button"
-            title={autoFit ? 'Ajuste Automático Ativo (Celular 100% visível na tela)' : 'Clique para ajustar celular à tela inteira'}
-            onClick={handleToggleAutoFit}
-            className={`flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl text-xs font-medium border transition-all shrink-0 ${
-              autoFit
-                ? 'bg-sky-500/15 border-sky-500/40 text-sky-400 shadow-sm'
-                : 'bg-slate-950/80 border-slate-800/90 text-slate-400 hover:text-slate-200'
-            }`}
-          >
-            <Scan className="w-3.5 h-3.5 shrink-0" />
-            <span className="hidden md:inline">Ajustar</span>
-            {autoFit && <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />}
-          </button>
+          <Tooltip content={autoFit ? 'Ajuste Automático Ativo (100% visível na tela)' : 'Ajustar dispositivo à tela'}>
+            <button
+              type="button"
+              onClick={handleToggleAutoFit}
+              className={`flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium border transition-all shrink-0 ${
+                autoFit
+                  ? 'bg-sky-500/15 border-sky-500/40 text-sky-400 shadow-sm font-semibold'
+                  : 'bg-slate-950/80 border-slate-800/90 text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <Scan className="w-3.5 h-3.5 shrink-0" />
+              <span className="text-[11px] hidden md:inline">Ajustar</span>
+              {autoFit && <span className="w-1.5 h-1.5 rounded-full bg-sky-400 animate-pulse" />}
+            </button>
+          </Tooltip>
 
           {/* Zoom Controller */}
-          <div className="hidden lg:flex items-center gap-0.5 bg-slate-950/80 px-1.5 py-1 rounded-xl border border-slate-800/90 text-xs shrink-0">
+          <div className="flex items-center gap-0.5 bg-slate-950/80 px-1 py-1 rounded-xl border border-slate-800/90 text-xs shrink-0">
             <button
               type="button"
               title="Reduzir Zoom (-)"
               onClick={handleZoomOut}
               disabled={effectiveZoom <= 45}
-              className="p-1 text-slate-400 hover:text-slate-200 disabled:opacity-40 disabled:hover:text-slate-400 transition-colors shrink-0"
+              className="p-1 text-slate-400 hover:text-slate-200 disabled:opacity-40 transition-colors shrink-0"
             >
               <ZoomOut className="w-3.5 h-3.5" />
             </button>
@@ -331,7 +342,7 @@ function LivePreviewPhoneComponent({
                   setAutoFit(true);
                 }
               }}
-              className="px-1 font-mono text-[11px] font-semibold text-slate-300 min-w-[46px] text-center hover:text-sky-400 transition-colors flex items-center justify-center gap-0.5"
+              className="px-1 font-mono text-[11px] font-semibold text-slate-300 min-w-[38px] text-center hover:text-sky-400 transition-colors flex items-center justify-center gap-0.5"
             >
               <span>{effectiveZoom}%</span>
               {autoFit && <span className="text-[9px] text-sky-400 font-sans">Fit</span>}
@@ -342,102 +353,72 @@ function LivePreviewPhoneComponent({
               title="Aumentar Zoom (+)"
               onClick={handleZoomIn}
               disabled={effectiveZoom >= 125}
-              className="p-1 text-slate-400 hover:text-slate-200 disabled:opacity-40 disabled:hover:text-slate-400 transition-colors shrink-0"
+              className="p-1 text-slate-400 hover:text-slate-200 disabled:opacity-40 transition-colors shrink-0"
             >
               <ZoomIn className="w-3.5 h-3.5" />
             </button>
           </div>
 
-          {/* Studio Ambience Selector */}
-          <div className="hidden 2xl:flex items-center gap-1 bg-slate-950/80 p-1 rounded-xl border border-slate-800/90 shrink-0">
-            <button
-              type="button"
-              title="Fundo Studio Grid"
-              onClick={() => setStudioBg('grid')}
-              className={`p-1.5 rounded-lg text-xs transition-colors ${
-                studioBg === 'grid' ? 'bg-slate-800 text-sky-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              <Layers className="w-3.5 h-3.5" />
-            </button>
-
-            <button
-              type="button"
-              title="Fundo Mesh Gradient"
-              onClick={() => setStudioBg('mesh')}
-              className={`p-1.5 rounded-lg text-xs transition-colors ${
-                studioBg === 'mesh' ? 'bg-slate-800 text-sky-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              <Palette className="w-3.5 h-3.5" />
-            </button>
-
-            <button
-              type="button"
-              title="Fundo Minimal Slate"
-              onClick={() => setStudioBg('slate')}
-              className={`p-1.5 rounded-lg text-xs transition-colors ${
-                studioBg === 'slate' ? 'bg-slate-800 text-sky-400 shadow-sm' : 'text-slate-500 hover:text-slate-300'
-              }`}
-            >
-              <Sliders className="w-3.5 h-3.5" />
-            </button>
-          </div>
-
           {/* Copy Link Button */}
-          <button
-            type="button"
-            title="Copiar Link Público"
-            onClick={handleCopyPublicUrl}
-            className="px-2.5 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white transition-all text-xs flex items-center gap-1.5 border border-slate-700/60 shadow-sm active:scale-95 shrink-0 whitespace-nowrap"
-          >
-            {copiedLink ? (
-              <>
-                <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-                <span className="text-emerald-400 font-semibold">Copiado!</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-                <span className="hidden sm:inline">Copiar Link</span>
-              </>
-            )}
-          </button>
+          <Tooltip content={copiedLink ? 'Link copiado!' : 'Copiar link público do site'}>
+            <button
+              type="button"
+              onClick={handleCopyPublicUrl}
+              className="px-2.5 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white transition-all text-xs flex items-center gap-1.5 border border-slate-700/60 shadow-sm active:scale-95 shrink-0 whitespace-nowrap"
+            >
+              {copiedLink ? (
+                <>
+                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <span className="text-emerald-400 font-semibold text-[11px]">Copiado!</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+                  <span className="text-[11px] hidden sm:inline">Copiar</span>
+                </>
+              )}
+            </button>
+          </Tooltip>
 
           {/* QR Code Quick View */}
-          <button
-            type="button"
-            title="Gerar e Escanear QR Code"
-            onClick={() => setShowQrQuickModal(true)}
-            className="p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white transition-all text-xs flex items-center gap-1.5 border border-slate-700/60 shadow-sm active:scale-95 shrink-0"
-          >
-            <QrCode className="w-3.5 h-3.5 text-sky-400 shrink-0" />
-            <span className="hidden xl:inline">QR Code</span>
-          </button>
+          <Tooltip content="Gerar e escanear QR Code">
+            <button
+              type="button"
+              onClick={() => setShowQrQuickModal(true)}
+              className="px-2.5 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-300 hover:text-white transition-all text-xs flex items-center gap-1.5 border border-slate-700/60 shadow-sm active:scale-95 shrink-0 whitespace-nowrap"
+            >
+              <QrCode className="w-3.5 h-3.5 text-sky-400 shrink-0" />
+              <span className="text-[11px] hidden sm:inline">QR Code</span>
+            </button>
+          </Tooltip>
 
           {/* Refresh preview */}
-          <button
-            type="button"
-            title="Recarregar Prévia"
-            onClick={handleRefresh}
-            className="p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-colors border border-slate-700/60 shadow-sm active:scale-95 shrink-0"
-          >
-            <RefreshCw className="w-3.5 h-3.5 shrink-0" />
-          </button>
+          <Tooltip content="Recarregar prévia ao vivo">
+            <button
+              type="button"
+              onClick={handleRefresh}
+              className="p-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-colors border border-slate-700/60 shadow-sm active:scale-95 shrink-0"
+              aria-label="Recarregar"
+            >
+              <RefreshCw className="w-3.5 h-3.5 shrink-0" />
+            </button>
+          </Tooltip>
 
           {/* Fullscreen toggle */}
-          <button
-            type="button"
-            title={deviceMode === 'fullscreen' ? 'Sair da tela cheia' : 'Visualizar em tela cheia'}
-            onClick={() => onDeviceChange(deviceMode === 'fullscreen' ? 'mobile' : 'fullscreen')}
-            className="p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-colors border border-slate-700/60 shadow-sm active:scale-95 shrink-0"
-          >
-            {deviceMode === 'fullscreen' ? (
-              <Minimize2 className="w-3.5 h-3.5 shrink-0" />
-            ) : (
-              <Maximize2 className="w-3.5 h-3.5 shrink-0" />
-            )}
-          </button>
+          <Tooltip content={deviceMode === 'fullscreen' ? 'Sair da tela cheia' : 'Visualizar em tela cheia'}>
+            <button
+              type="button"
+              onClick={() => onDeviceChange(deviceMode === 'fullscreen' ? 'mobile' : 'fullscreen')}
+              className="p-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-400 hover:text-slate-200 transition-colors border border-slate-700/60 shadow-sm active:scale-95 shrink-0"
+              aria-label="Tela Cheia"
+            >
+              {deviceMode === 'fullscreen' ? (
+                <Minimize2 className="w-3.5 h-3.5 shrink-0" />
+              ) : (
+                <Maximize2 className="w-3.5 h-3.5 shrink-0" />
+              )}
+            </button>
+          </Tooltip>
         </div>
       </header>
 
