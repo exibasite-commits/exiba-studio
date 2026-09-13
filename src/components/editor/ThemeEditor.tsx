@@ -1198,13 +1198,13 @@ export function ThemeEditor({ theme, onChangeTheme }: ThemeEditorProps) {
         </div>
 
         {/* Individual Font Selectors */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 pt-2">
           {/* Heading Font */}
-          <div className="p-3.5 bg-slate-950 rounded-2xl border border-slate-800/90 space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+          <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800/90 space-y-3">
+            <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5 min-w-0">
-                <label className="text-xs text-slate-200 font-bold block">
-                  Fonte dos Títulos & Headings
+                <label className="text-xs text-slate-200 font-bold block truncate">
+                  Fonte dos Títulos
                 </label>
                 <InfoTooltip text="Fonte aplicada no nome de perfil, cabeçalhos de seções e títulos dos cards." />
               </div>
@@ -1213,17 +1213,17 @@ export function ThemeEditor({ theme, onChangeTheme }: ThemeEditorProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 title={`Abrir ${theme.fontHeading} no Google Fonts`}
-                className="flex items-center gap-1 text-[10px] text-sky-400 font-mono hover:text-sky-300 hover:underline transition-colors min-w-0 max-w-full"
+                className="flex items-center gap-1 text-[11px] text-sky-400 font-mono hover:text-sky-300 hover:underline transition-colors shrink-0"
               >
-                <span className="truncate">{theme.fontHeading}</span>
-                <ArrowUpRight className="w-3 h-3 shrink-0" />
+                <span>Google Fonts</span>
+                <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
               </a>
             </div>
 
             <select
               value={theme.fontHeading}
               onChange={(e) => updateField('fontHeading', e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700/60 rounded-xl px-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-500 font-medium"
+              className="w-full bg-slate-900 border border-slate-700/60 rounded-xl px-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-500 font-medium cursor-pointer"
               title="Selecione a fonte para títulos e cabeçalhos"
             >
               {FONT_OPTIONS.map((f) => (
@@ -1234,11 +1234,11 @@ export function ThemeEditor({ theme, onChangeTheme }: ThemeEditorProps) {
             </select>
 
             <div
-              className="p-3 rounded-xl bg-slate-900 border border-slate-800/60 text-center"
+              className="p-3 rounded-xl bg-slate-900/80 border border-slate-800/60 text-center"
               style={{ fontFamily: theme.fontHeading }}
             >
               <span className="text-sm font-bold text-slate-100 block">
-                {theme.fontHeading} • Título de Alto Impacto
+                {theme.fontHeading} • Título em Destaque
               </span>
               <span className="text-[11px] text-slate-400">
                 1234567890 • ABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -1247,10 +1247,10 @@ export function ThemeEditor({ theme, onChangeTheme }: ThemeEditorProps) {
           </div>
 
           {/* Body Font */}
-          <div className="p-3.5 bg-slate-950 rounded-2xl border border-slate-800/90 space-y-3">
-            <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1">
+          <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800/90 space-y-3">
+            <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-1.5 min-w-0">
-                <label className="text-xs text-slate-200 font-bold block">
+                <label className="text-xs text-slate-200 font-bold block truncate">
                   Fonte do Corpo & Botões
                 </label>
                 <InfoTooltip text="Fonte aplicada nas biografias, textos explicativos, rótulos de botões e links." />
@@ -1260,17 +1260,17 @@ export function ThemeEditor({ theme, onChangeTheme }: ThemeEditorProps) {
                 target="_blank"
                 rel="noopener noreferrer"
                 title={`Abrir ${theme.fontBody} no Google Fonts`}
-                className="flex items-center gap-1 text-[10px] text-sky-400 font-mono hover:text-sky-300 hover:underline transition-colors min-w-0 max-w-full"
+                className="flex items-center gap-1 text-[11px] text-sky-400 font-mono hover:text-sky-300 hover:underline transition-colors shrink-0"
               >
-                <span className="truncate">{theme.fontBody}</span>
-                <ArrowUpRight className="w-3 h-3 shrink-0" />
+                <span>Google Fonts</span>
+                <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
               </a>
             </div>
 
             <select
               value={theme.fontBody}
               onChange={(e) => updateField('fontBody', e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700/60 rounded-xl px-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-500 font-medium"
+              className="w-full bg-slate-900 border border-slate-700/60 rounded-xl px-3 py-2.5 text-xs text-slate-100 focus:outline-none focus:border-sky-500 font-medium cursor-pointer"
               title="Selecione a fonte para o corpo do texto e botões"
             >
               {FONT_OPTIONS.map((f) => (
@@ -1281,11 +1281,11 @@ export function ThemeEditor({ theme, onChangeTheme }: ThemeEditorProps) {
             </select>
 
             <div
-              className="p-3 rounded-xl bg-slate-900 border border-slate-800/60 text-center"
+              className="p-3 rounded-xl bg-slate-900/80 border border-slate-800/60 text-center"
               style={{ fontFamily: theme.fontBody }}
             >
               <span className="text-xs font-medium text-slate-200 block">
-                {theme.fontBody} • Texto fluído e legível para botões e descrições
+                {theme.fontBody} • Texto fluido e legível para botões e descrições
               </span>
               <span className="text-[10px] text-slate-400">
                 1234567890 • abcdefghijklmnopqrstuvwxyz

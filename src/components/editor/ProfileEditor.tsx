@@ -1145,11 +1145,14 @@ export function ProfileEditor({ profile, onChange }: ProfileEditorProps) {
             </div>
 
             {/* Handle & Pronouns Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
-                <label className="text-xs text-slate-300 font-semibold block mb-1">
-                  Usuário / @Handle
-                </label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs text-slate-300 font-semibold block">
+                    Usuário / @Handle
+                  </label>
+                  <span className="text-[10px] text-slate-500 font-mono">Link do Site</span>
+                </div>
                 <div className="relative">
                   <AtSign className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
@@ -1157,15 +1160,18 @@ export function ProfileEditor({ profile, onChange }: ProfileEditorProps) {
                     value={profile.handle}
                     onChange={(e) => handleFieldChange('handle', e.target.value)}
                     placeholder="Ex: @mayrah_esmalteria"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 font-mono transition-all"
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 font-mono transition-all"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs text-slate-300 font-semibold block mb-1">
-                  Pronomes / Distintivo Curto (Opcional)
-                </label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs text-slate-300 font-semibold flex items-center gap-1">
+                    <span>Pronomes / Distintivo</span>
+                  </label>
+                  <span className="text-[10px] text-slate-500">Opcional</span>
+                </div>
                 <div className="relative">
                   <Tag className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                   <input
@@ -1173,7 +1179,7 @@ export function ProfileEditor({ profile, onChange }: ProfileEditorProps) {
                     value={profile.pronouns || ''}
                     onChange={(e) => handleFieldChange('pronouns', e.target.value)}
                     placeholder="Ex: Ela/Dela ou Pro"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all"
+                    className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-9 pr-3 py-2.5 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all"
                   />
                 </div>
               </div>
