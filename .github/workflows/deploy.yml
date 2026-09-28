@@ -20,7 +20,8 @@ jobs:
           script: |
             set -e
             cd /var/www/exiba-studio
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
             npm install
             npm run build
             cd server && npm install
