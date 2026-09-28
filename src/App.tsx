@@ -62,6 +62,34 @@ import {
   Maximize2,
 } from 'lucide-react';
 
+function isCustomDomainHost(hostname: string): boolean {
+  if (!hostname) return false;
+  const host = hostname.toLowerCase();
+  // Hosts locais ou IPs diretos de desenvolvimento / VPS
+  if (
+    host === 'localhost' ||
+    host === '127.0.0.1' ||
+    host === '0.0.0.0' ||
+    /^\d+\.\d+\.\d+\.\d+$/.test(host)
+  ) {
+    return false;
+  }
+  // Domínios da própria plataforma do Exiba Studio
+  const platformHosts = [
+    'exiba.site',
+    'www.exiba.site',
+    'app.exiba.site',
+    'exibastudio.com',
+    'www.exibastudio.com',
+    'app.exibastudio.com',
+    'exiba-studio.vercel.app',
+  ];
+  if (platformHosts.includes(host)) {
+    return false;
+  }
+  return true;
+}
+
 function MainApp() {
   const { user, loading: authLoading, refreshUser } = useAuth();
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
@@ -69,11 +97,18 @@ function MainApp() {
   // Navigation View: 'landing' | 'dashboard' | 'editor' | 'admin'
   const [currentView, setCurrentView] = useState<'landing' | 'dashboard' | 'editor' | 'admin'>('landing');
 
-  // Rota inicial: detecta /:slug (site público) ou /reset-password.
+  // Rota inicial: detecta domínio próprio de cliente, /:slug (site público) ou /reset-password.
+  const [customDomain, setCustomDomain] = useState<string | null>(null);
   const [publicSlug, setPublicSlug] = useState<string | null>(null);
   const [showResetPassword, setShowResetPassword] = useState(false);
 
   useEffect(() => {
+    const hostname = window.location.hostname;
+    if (isCustomDomainHost(hostname)) {
+      setCustomDomain(hostname);
+      return;
+    }
+
     const path = window.location.pathname;
     if (path === '/reset-password') {
       setShowResetPassword(true);
@@ -382,7 +417,12 @@ function MainApp() {
     );
   }
 
-  // 0b. PUBLIC SITE VIEW (rota /:slug)
+  // 0b. CUSTOM DOMAIN VIEW (domínio próprio de cliente Pro)
+  if (customDomain) {
+    return <PublicSiteView customDomain={customDomain} />;
+  }
+
+  // 0c. PUBLIC SITE VIEW (rota /:slug)
   if (publicSlug) {
     return <PublicSiteView slug={publicSlug} />;
   }

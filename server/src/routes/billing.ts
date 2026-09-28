@@ -411,8 +411,71 @@ router.get(
       plan,
       planExpiresAt: expiresAt,
       isAdmin: Boolean(user.is_admin),
+      hasSubscription: Boolean(user.mp_subscription_id),
       hasPaymentConfig: Boolean(config.mpAccessToken && config.mpAccessToken.trim().length > 0),
     });
+  })
+);
+
+// POST /api/billing/cancel-subscription — cancela a renovação automática da assinatura Pro
+router.post(
+  '/cancel-subscription',
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const user = await db.findUserById(req.user!.id);
+    if (!user) throw new ApiError(404, 'Usuário não encontrado.');
+
+    if (user.plan !== 'pro') {
+      throw new ApiError(400, 'Você não possui uma assinatura Pro ativa.');
+    }
+
+    // Se houver assinatura recorrente vinculada no Mercado Pago, cancela no gateway
+    if (user.mp_subscription_id && config.mpAccessToken) {
+      try {
+        await mpRequest(`/preapproval/${user.mp_subscription_id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ status: 'cancelled' }),
+        });
+      } catch (err) {
+        console.warn('[Mercado Pago] Falha ao cancelar assinatura no gateway:', err);
+      }
+    }
+
+    // Remove a assinatura recorrente para evitar novas cobranças
+    await db.setUserSubscriptionId(user.id, null);
+
+    // Registra o evento de cancelamento no histórico de pagamentos
+    await db.insertPayment({
+      userId: user.id,
+      mpPaymentId: user.mp_subscription_id || 'manual_cancel',
+      amount: 0,
+      status: 'cancelled',
+    });
+
+    res.json({
+      success: true,
+      message: 'Renovação automática cancelada com sucesso. Seu plano Pro permanecerá ativo até o final do período vigente.',
+      plan: user.plan,
+      planExpiresAt: user.plan_expires_at,
+    });
+  })
+);
+
+// GET /api/billing/history — histórico de pagamentos do usuário
+router.get(
+  '/history',
+  requireAuth,
+  asyncHandler(async (req, res) => {
+    const payments = await db.listPaymentsByUser(req.user!.id);
+    res.json(
+      payments.map((p) => ({
+        id: String(p.id),
+        mpPaymentId: p.mp_payment_id,
+        amount: Number(p.amount),
+        status: p.status,
+        createdAt: p.created_at,
+      }))
+    );
   })
 );
 

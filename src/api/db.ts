@@ -164,6 +164,16 @@ export interface BillingStatus {
   plan: 'free' | 'pro';
   planExpiresAt: string | null;
   isAdmin: boolean;
+  hasSubscription?: boolean;
+  hasPaymentConfig?: boolean;
+}
+
+export interface PaymentRecord {
+  id: string;
+  mpPaymentId: string;
+  amount: number;
+  status: string;
+  createdAt: string;
 }
 
 export async function subscribeToPro(cycle: 'monthly' | 'yearly'): Promise<{ initPoint: string | null }> {
@@ -175,6 +185,19 @@ export async function subscribeToPro(cycle: 'monthly' | 'yearly'): Promise<{ ini
 
 export async function getBillingStatus(): Promise<BillingStatus> {
   return apiFetch('/api/billing/status');
+}
+
+export async function cancelSubscription(): Promise<{
+  success: boolean;
+  message: string;
+  plan: string;
+  planExpiresAt: string | null;
+}> {
+  return apiFetch('/api/billing/cancel-subscription', { method: 'POST' });
+}
+
+export async function getPaymentHistory(): Promise<PaymentRecord[]> {
+  return apiFetch('/api/billing/history');
 }
 
 // ---------- admin ----------
@@ -239,6 +262,14 @@ export interface PublicSite {
 export async function getPublicSite(slug: string): Promise<PublicSite | null> {
   try {
     return await apiFetch<PublicSite>(`/api/public/sites/${encodeURIComponent(slug)}`);
+  } catch {
+    return null;
+  }
+}
+
+export async function getPublicSiteByDomain(domain: string): Promise<PublicSite | null> {
+  try {
+    return await apiFetch<PublicSite>(`/api/public/by-domain/${encodeURIComponent(domain)}`);
   } catch {
     return null;
   }

@@ -257,6 +257,21 @@ export async function insertPayment(input: {
     input.status,
   ]);
 }
+export interface PaymentRow {
+  id: number;
+  user_id: number;
+  mp_payment_id: string;
+  amount: number;
+  status: string;
+  created_at: Date;
+}
+
+export async function listPaymentsByUser(userId: number): Promise<PaymentRow[]> {
+  return query<PaymentRow[]>(
+    'SELECT * FROM payments WHERE user_id = ? ORDER BY created_at DESC LIMIT 50',
+    [userId]
+  );
+}
 
 // ---------- admin ----------
 
@@ -310,6 +325,38 @@ export async function findPublishedSiteBySlug(
      JOIN users u ON u.id = s.owner_id
      WHERE s.slug = ? AND s.is_published = 1`,
     [slug]
+  );
+  const row = rows[0];
+  if (!row) return null;
+  const { owner_plan, owner_is_admin, owner_email, ...siteRow } = row;
+  return {
+    site: siteRow as SiteRow,
+    plan: (owner_plan ?? 'free') as 'free' | 'pro',
+    isAdmin: Boolean(owner_is_admin),
+    ownerEmail: owner_email,
+  };
+}
+
+export async function findPublishedSiteByCustomDomain(
+  domain: string
+): Promise<{ site: SiteRow; plan: 'free' | 'pro'; isAdmin: boolean; ownerEmail: string } | null> {
+  const cleanDomain = domain
+    .toLowerCase()
+    .trim()
+    .replace(/^https?:\/\//, '')
+    .replace(/:\d+$/, '')
+    .replace(/\/+$/, '');
+
+  if (!cleanDomain) return null;
+
+  const rows = await query<any[]>(
+    `SELECT s.*, u.plan AS owner_plan, u.is_admin AS owner_is_admin, u.email AS owner_email
+     FROM sites s
+     JOIN users u ON u.id = s.owner_id
+     WHERE s.is_published = 1
+       AND (u.plan = 'pro' OR u.is_admin = 1)
+       AND LOWER(JSON_UNQUOTE(JSON_EXTRACT(s.config, '$.customDomain'))) = ?`,
+    [cleanDomain]
   );
   const row = rows[0];
   if (!row) return null;

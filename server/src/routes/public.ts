@@ -43,6 +43,19 @@ router.get(
   })
 );
 
+// GET /api/public/by-domain/:domain — busca site por domínio próprio (clientes Pro).
+router.get(
+  '/by-domain/:domain',
+  asyncHandler(async (req, res) => {
+    const domain = String(req.params.domain ?? '');
+    const result = await db.findPublishedSiteByCustomDomain(domain);
+    if (!result) throw new ApiError(404, 'Site não encontrado para este domínio.');
+
+    const site = serializeSite(result.site);
+    res.json({ id: site.id, slug: site.slug, config: site.config, plan: result.plan, isAdmin: result.isAdmin });
+  })
+);
+
 // GET /api/public/sites/:slug/availability — horários disponíveis para o visitante.
 router.get(
   '/sites/:slug/availability',
