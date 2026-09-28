@@ -61,13 +61,16 @@ app.listen(config.port, () => {
   console.log(`API rodando em http://localhost:${config.port}`);
 });
 
-// Job interno: rebaixa assinaturas pro expiradas (roda a cada 24h).
-const EXPIRE_INTERVAL_MS = 24 * 60 * 60 * 1000;
-setInterval(async () => {
+// Job interno: rebaixa assinaturas pro expiradas (na inicialização e a cada 24h).
+const runDowngradeJob = async () => {
   try {
     const count = await db.downgradeExpiredSubscriptions();
     if (count > 0) console.log(`[billing] ${count} assinatura(s) expirada(s) rebaixada(s) para free.`);
   } catch (err) {
     console.error('[billing] erro ao rebaixar assinaturas expiradas:', err);
   }
-}, EXPIRE_INTERVAL_MS);
+};
+
+runDowngradeJob();
+const EXPIRE_INTERVAL_MS = 24 * 60 * 60 * 1000;
+setInterval(runDowngradeJob, EXPIRE_INTERVAL_MS);

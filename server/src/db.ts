@@ -85,7 +85,42 @@ export async function createSite(
 }
 
 export async function listSitesByOwner(ownerId: number): Promise<SiteRow[]> {
-  return query<SiteRow[]>('SELECT * FROM sites WHERE owner_id = ? ORDER BY created_at DESC', [ownerId]);
+  const rows = await query<any[]>(
+    `SELECT 
+       id, 
+       owner_id, 
+       slug, 
+       title, 
+       template_id, 
+       is_published, 
+       created_at, 
+       updated_at,
+       JSON_UNQUOTE(JSON_EXTRACT(config, '$.profile.name')) AS profile_name,
+       JSON_UNQUOTE(JSON_EXTRACT(config, '$.profile.avatarUrl')) AS profile_avatar,
+       JSON_UNQUOTE(JSON_EXTRACT(config, '$.customDomain')) AS custom_domain
+     FROM sites 
+     WHERE owner_id = ? 
+     ORDER BY created_at DESC`,
+    [ownerId]
+  );
+
+  return rows.map((r) => ({
+    id: r.id,
+    owner_id: r.owner_id,
+    slug: r.slug,
+    title: r.title,
+    template_id: r.template_id,
+    is_published: r.is_published,
+    created_at: r.created_at,
+    updated_at: r.updated_at,
+    config: {
+      profile: {
+        name: r.profile_name || '',
+        avatarUrl: r.profile_avatar || '',
+      },
+      customDomain: r.custom_domain || undefined,
+    },
+  }));
 }
 
 export async function findSiteById(id: number): Promise<SiteRow | null> {
@@ -249,14 +284,23 @@ export async function insertPayment(input: {
   mpPaymentId: string;
   amount: number;
   status: string;
-}): Promise<void> {
-  await query('INSERT INTO payments (user_id, mp_payment_id, amount, status) VALUES (?, ?, ?, ?)', [
-    input.userId,
-    input.mpPaymentId,
-    input.amount,
-    input.status,
-  ]);
+}): Promise<boolean> {
+  try {
+    await query('INSERT INTO payments (user_id, mp_payment_id, amount, status) VALUES (?, ?, ?, ?)', [
+      input.userId,
+      input.mpPaymentId,
+      input.amount,
+      input.status,
+    ]);
+    return true;
+  } catch (err: any) {
+    if (err?.code === 'ER_DUP_ENTRY') {
+      return false;
+    }
+    throw err;
+  }
 }
+
 export interface PaymentRow {
   id: number;
   user_id: number;
@@ -264,6 +308,14 @@ export interface PaymentRow {
   amount: number;
   status: string;
   created_at: Date;
+}
+
+export async function findPaymentByMpId(mpPaymentId: string): Promise<PaymentRow | null> {
+  const rows = await query<PaymentRow[]>(
+    'SELECT * FROM payments WHERE mp_payment_id = ? LIMIT 1',
+    [mpPaymentId]
+  );
+  return rows[0] ?? null;
 }
 
 export async function listPaymentsByUser(userId: number): Promise<PaymentRow[]> {
@@ -354,7 +406,7 @@ export async function findPublishedSiteByCustomDomain(
      FROM sites s
      JOIN users u ON u.id = s.owner_id
      WHERE s.is_published = 1
-       AND (u.plan = 'pro' OR u.is_admin = 1)
+       AND (u.is_admin = 1 OR (u.plan = 'pro' AND (u.plan_expires_at IS NULL OR u.plan_expires_at >= NOW())))
        AND LOWER(JSON_UNQUOTE(JSON_EXTRACT(s.config, '$.customDomain'))) = ?`,
     [cleanDomain]
   );

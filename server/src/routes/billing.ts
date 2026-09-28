@@ -40,12 +40,7 @@ function getHeaderValue(value: string | string[] | undefined): string | undefine
 
 function validateMercadoPagoWebhook(req: Request): void {
   if (!config.mpWebhookSecret) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.warn('webhook sem validação - ambiente de desenvolvimento');
-      return;
-    }
-
-    throw new ApiError(500, 'Segredo do webhook do Mercado Pago não configurado.');
+    throw new ApiError(401, 'Segredo do webhook do Mercado Pago não configurado.');
   }
 
   const signature = getHeaderValue(req.headers['x-signature']);
@@ -361,13 +356,28 @@ router.post(
       const billingCycle = payment?.metadata?.billing_cycle === 'yearly' ? 'yearly' : 'monthly';
       const planCfg = PLAN_CONFIG[billingCycle];
 
+      const mpPaymentId = String(payment?.id ?? resourceId);
+
       if (userId) {
-        await db.insertPayment({
+        // Idempotência prévia: se a transação já foi processada anteriormente, responde 200 sem estender plano
+        const existing = await db.findPaymentByMpId(mpPaymentId);
+        if (existing) {
+          res.json({ ok: true, duplicate: true });
+          return;
+        }
+
+        // Tenta inserir; se houver duplicidade (ER_DUP_ENTRY no banco), insertPayment captura e retorna false
+        const inserted = await db.insertPayment({
           userId,
-          mpPaymentId: String(payment?.id ?? resourceId),
+          mpPaymentId,
           amount,
           status,
         });
+
+        if (!inserted) {
+          res.json({ ok: true, duplicate: true });
+          return;
+        }
 
         if (status === 'approved') {
           const expiresAt = new Date(Date.now() + planCfg.days * 24 * 60 * 60 * 1000);
